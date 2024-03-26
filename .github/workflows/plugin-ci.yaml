@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  workflow_call:
+    inputs:
+      ui-path:
+        description: Path of UI project.
+        type: string
+        required: false
+        default: "console"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Environment
+        uses: halo-sigs/actions/plugin-setup-env@v1
+        with:
+          cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
+      - name: Check
+        run: ./gradlew clean build
