@@ -8,6 +8,11 @@ on:
         type: string
         required: false
         default: "console"
+      skip-node-setup:
+        description: Indicates if the node setup should be skipped.
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   ci:
@@ -18,5 +23,6 @@ jobs:
         uses: halo-sigs/actions/plugin-setup-env@v1
         with:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
+          skip-node-setup: ${{ inputs.skip-node-setup }}
       - name: Check
         run: ./gradlew clean build
