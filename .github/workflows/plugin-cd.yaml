@@ -38,6 +38,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
       - name: Setup Environment
@@ -46,7 +47,7 @@ jobs:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
       - name: Build
-        run: ./gradlew build -x check
+        run: ./gradlew -Pversion=${{ github.event.release.tag_name }} build -x check
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
