@@ -30,7 +30,7 @@ jobs:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
       - name: Check
-        run: ./gradlew -Pversion=${{ github.sha }} clean build
+        run: ./gradlew clean build
       - name: Upload Artifacts
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
