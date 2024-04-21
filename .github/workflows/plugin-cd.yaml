@@ -18,6 +18,11 @@ on:
         type: boolean
         required: false
         default: false
+      skip-appstore-release:
+        description: Indicates if the appstore release should be skipped.
+        type: boolean
+        required: false
+        default: false
       app-id:
         description: Application ID from Halo Appstore.
         required: true
@@ -75,7 +80,7 @@ jobs:
     name: Appstore Release
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' && ${{ !inputs.skip-appstore-release }}
     steps:
       - uses: actions/checkout@v4
       - name: Download Artifacts
