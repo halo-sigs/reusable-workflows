@@ -25,8 +25,9 @@ on:
         default: false
       app-id:
         description: Application ID from Halo Appstore.
-        required: true
+        required: false
         type: string
+        default: not-configured-app-id
       halo-backend-baseurl:
         description: Base URL of Halo Appstore.
         required: false
@@ -35,10 +36,10 @@ on:
     secrets:
       halo-username:
         description: Username of Halo Appstore.
-        required: true
+        required: false
       halo-password:
         description: Password of Halo Appstore.
-        required: true
+        required: false
 jobs:
   build:
     name: Build
