@@ -8,6 +8,21 @@ on:
         required: false
         default: build/libs
         description: Artifacts path, default is build/libs. Must be a folder.
+      node-version:
+        description: Node.js version.
+        type: string
+        required: false
+        default: "18"
+      pnpm-version:
+        description: pnpm version.
+        type: string
+        required: false
+        default: "8"
+      java-version:
+        description: Java version.
+        type: string
+        required: false
+        default: "17"
       ui-path:
         description: Path of UI project.
         type: string
@@ -52,6 +67,9 @@ jobs:
         with:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
+          node-version: ${{ inputs.node-version }}
+          pnpm-version: ${{ inputs.pnpm-version }}
+          java-version: ${{ inputs.java-version }}
       - name: Build
         run: ./gradlew -Pversion=${{ github.event.release.tag_name }} build -x check
       - name: Upload Artifacts
