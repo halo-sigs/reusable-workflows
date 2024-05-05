@@ -71,7 +71,9 @@ jobs:
           pnpm-version: ${{ inputs.pnpm-version }}
           java-version: ${{ inputs.java-version }}
       - name: Build
-        run: ./gradlew -Pversion=${{ github.event.release.tag_name }} build -x check
+        run: |
+          version=${{ github.event.release.tag_name }}
+          ./gradlew -Pversion=${version#v} build -x check
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
