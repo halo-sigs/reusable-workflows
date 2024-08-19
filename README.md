@@ -36,10 +36,9 @@ on:
 jobs:
   cd:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@main
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v2
     secrets:
-      halo-username: ${{ secrets.HALO_USERNAME }}
-      halo-password: ${{ secrets.HALO_PASSWORD }}
+      halo-pat: ${{ secrets.HALO_PAT }}
     permissions:
       contents: write
     with:
