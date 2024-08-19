@@ -49,11 +49,8 @@ on:
         default: https://www.halo.run
         type: string
     secrets:
-      halo-username:
-        description: Username of Halo Appstore.
-        required: false
-      halo-password:
-        description: Password of Halo Appstore.
+      halo-pat:
+        description: Personal access token of Halo Appstore.
         required: false
 jobs:
   build:
@@ -110,12 +107,11 @@ jobs:
           name: artifacts
           path: ${{ inputs.artifacts-path }}
       - name: Release to Appstore
-        uses: halo-sigs/app-store-release-action@v2
+        uses: halo-sigs/app-store-release-action@main
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           app-id: ${{ inputs.app-id }}
           halo-backend-baseurl: ${{ inputs.halo-backend-baseurl }}
           release-id: ${{ github.event.release.id }}
           assets-dir: ${{ inputs.artifacts-path }}
-          halo-username: ${{ secrets.halo-username }}
-          halo-password: ${{ secrets.halo-password }}
+          halo-pat: ${{ secrets.halo-pat }}
