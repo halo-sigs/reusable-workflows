@@ -39,21 +39,18 @@ on:
         required: false
         default: false
       app-id:
-        description: Application ID from Halo Appstore.
+        description: Application ID from Halo App Store.
         required: false
         type: string
         default: not-configured-app-id
       halo-backend-baseurl:
-        description: Base URL of Halo Appstore.
+        description: Base URL of Halo App Store.
         required: false
         default: https://www.halo.run
         type: string
     secrets:
-      halo-username:
-        description: Username of Halo Appstore.
-        required: false
-      halo-password:
-        description: Password of Halo Appstore.
+      halo-pat:
+        description: Personal access token of Halo Appstore.
         required: false
 jobs:
   build:
@@ -98,7 +95,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ github.event.release.tag_name }} ${{ inputs.artifacts-path }}/*
   appstore-release:
-    name: Appstore Release
+    name: App Store Release
     runs-on: ubuntu-latest
     needs: build
     if: ${{ github.event_name == 'release' && !inputs.skip-appstore-release }}
@@ -109,13 +106,12 @@ jobs:
         with:
           name: artifacts
           path: ${{ inputs.artifacts-path }}
-      - name: Release to Appstore
-        uses: halo-sigs/app-store-release-action@v2
+      - name: Release to App Store
+        uses: halo-sigs/app-store-release-action@v3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           app-id: ${{ inputs.app-id }}
           halo-backend-baseurl: ${{ inputs.halo-backend-baseurl }}
           release-id: ${{ github.event.release.id }}
           assets-dir: ${{ inputs.artifacts-path }}
-          halo-username: ${{ secrets.halo-username }}
-          halo-password: ${{ secrets.halo-password }}
+          halo-pat: ${{ secrets.halo-pat }}

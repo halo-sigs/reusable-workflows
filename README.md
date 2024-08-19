@@ -43,6 +43,6 @@ jobs:
     permissions:
       contents: write
     with:
-      # This is required for releasing to Halo Appstore.
+      # This is required for releasing to Halo App Store.
       app-id: app-Qxhpp
 ```
