@@ -48,9 +48,17 @@ on:
         required: false
         default: https://www.halo.run
         type: string
+      npm-registry-url:
+        type: string
+        default: ""
+        description: NPM registry.
+        required: false
     secrets:
       halo-pat:
         description: Personal access token of Halo Appstore.
+        required: false
+      npm-auth-token:
+        description: NPM auth token.
         required: false
 jobs:
   build:
@@ -60,17 +68,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Environment
-        uses: halo-sigs/actions/plugin-setup-env@v1
+        uses: halo-sigs/reusable-workflows/plugin-setup-env@main
         with:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
           node-version: ${{ inputs.node-version }}
           pnpm-version: ${{ inputs.pnpm-version }}
           java-version: ${{ inputs.java-version }}
+          npm-registry-url: ${{ inputs.npm-registry-url }}
       - name: Build
         run: |
           version=${{ github.event.release.tag_name }}
           ./gradlew -Pversion=${version#v} build -x check
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:

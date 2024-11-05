@@ -33,6 +33,15 @@ on:
         required: false
         default: build/libs
         description: Artifacts path, default is build/libs. Must be a folder.
+      npm-registry-url:
+        type: string
+        default: ""
+        description: NPM registry.
+        required: false
+    secrets:
+      npm-auth-token:
+        description: NPM auth token.
+        required: false
 
 jobs:
   ci:
@@ -40,15 +49,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Environment
-        uses: halo-sigs/actions/plugin-setup-env@v1
+        uses: halo-sigs/reusable-workflows/plugin-setup-env@main
         with:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
           node-version: ${{ inputs.node-version }}
           pnpm-version: ${{ inputs.pnpm-version }}
           java-version: ${{ inputs.java-version }}
+          npm-registry-url: ${{ inputs.npm-registry-url }}
       - name: Check
         run: ./gradlew clean build
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
