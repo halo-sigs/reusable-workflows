@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Environment
-        uses: halo-sigs/reusable-workflows/plugin-setup-env@main
+        uses: halo-sigs/reusable-workflows/plugin-setup-env@v3
         with:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
