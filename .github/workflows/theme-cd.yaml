@@ -1,0 +1,100 @@
+name: Theme CD
+
+on:
+  workflow_call:
+    inputs:
+      compress-all:
+        type: boolean
+        required: false
+        default: false
+        description: Whether to compress all files in the theme directory. If false, only necessary files will be compressed.
+      skip-appstore-release:
+        description: Indicates if the appstore release should be skipped.
+        type: boolean
+        required: false
+        default: false
+      app-id:
+        description: Application ID from Halo App Store.
+        required: false
+        type: string
+        default: not-configured-app-id
+      halo-backend-baseurl:
+        description: Base URL of Halo App Store.
+        required: false
+        default: https://www.halo.run
+        type: string
+    secrets:
+      halo-pat:
+        description: Personal access token of Halo Appstore.
+        required: false
+jobs:
+  package:
+    name: Package Theme
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create dist directory
+        run: mkdir -p dist
+      - name: Package Theme
+        run: |
+          version=${{ github.event.release.tag_name }}
+          repo_name=$(echo ${{ github.repository }} | cut -d "/" -f 2)
+          zip_name="${repo_name}-${version#v}.zip"
+          
+          if [ "${{ inputs.compress-all }}" = "true" ]; then
+            # Compress all files except dist directory and node_modules
+            zip -r "dist/${zip_name}" . -x "dist/*" -x "node_modules/*"
+          else
+            # Only compress necessary files
+            find . -type d -name "templates" -o -name "i18n" | zip -r "dist/${zip_name}" -@
+            find . -name "*.yaml" -not -name "pnpm-lock.yaml" | zip -r "dist/${zip_name}" -@
+            find . -name "README.md" -o -name "LICENSE" | zip -r "dist/${zip_name}" -@
+          fi
+          
+          echo "Created theme package at dist/${zip_name}"
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: theme-package
+          path: dist
+          retention-days: 1
+
+  github-release:
+    name: GitHub Release
+    runs-on: ubuntu-latest
+    needs: package
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-package
+          path: dist
+      - name: Upload Release Assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.event.release.tag_name }} dist/*
+          
+  appstore-release:
+    name: App Store Release
+    runs-on: ubuntu-latest
+    needs: package
+    if: ${{ github.event_name == 'release' && !inputs.skip-appstore-release }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: theme-package
+          path: dist
+      - name: Release to App Store
+        uses: halo-sigs/app-store-release-action@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          app-id: ${{ inputs.app-id }}
+          halo-backend-baseurl: ${{ inputs.halo-backend-baseurl }}
+          release-id: ${{ github.event.release.id }}
+          assets-dir: dist
+          halo-pat: ${{ secrets.halo-pat }}
