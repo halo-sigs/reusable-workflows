@@ -73,12 +73,11 @@ jobs:
           repo_name=$(echo ${{ github.repository }} | cut -d "/" -f 2)
           zip_name="${repo_name}-${version#v}.zip"
           
+          rm -rf node_modules
+          
           if [ "${{ inputs.compress-all }}" = "true" ]; then
-            # Compress all files except dist directory and node_modules
-            find . -not -path "*/\.*" -not -path "./node_modules/*" -not -path "./dist/*" \( -type f -o -type d -empty \) | sort > include_files.txt
-            zip -r "dist/${zip_name}" -@ < include_files.txt
+            zip -r "dist/${zip_name}" . -x "*/\.*" -x ".\.*" -x "dist/*"
           else
-            # Only compress necessary files
             find . -type d -name "templates" -o -name "i18n" | zip -r "dist/${zip_name}" -@
             find . -name "*.yaml" -not -name "pnpm-lock.yaml" | zip -r "dist/${zip_name}" -@
             find . -name "README.md" -o -name "LICENSE" | zip -r "dist/${zip_name}" -@
