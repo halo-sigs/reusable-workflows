@@ -75,7 +75,8 @@ jobs:
           
           if [ "${{ inputs.compress-all }}" = "true" ]; then
             # Compress all files except dist directory and node_modules
-            zip -r "dist/${zip_name}" . -x "dist/*" -x "node_modules/*" -x ".*" -x "*/.*"
+            find . -not -path "*/\.*" -not -path "./node_modules/*" -not -path "./dist/*" \( -type f -o -type d -empty \) | sort > include_files.txt
+            zip -r "dist/${zip_name}" -@ < include_files.txt
           else
             # Only compress necessary files
             find . -type d -name "templates" -o -name "i18n" | zip -r "dist/${zip_name}" -@
