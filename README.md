@@ -20,7 +20,7 @@ on:
 jobs:
   ci:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@main
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v3
 ```
 
 Example of `.github/workflows/cd.yaml`:
@@ -36,7 +36,7 @@ on:
 jobs:
   cd:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v2
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v3
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     permissions:
