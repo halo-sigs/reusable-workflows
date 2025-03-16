@@ -8,6 +8,21 @@ on:
         required: false
         default: false
         description: Whether to compress all files in the theme directory. If false, only necessary files will be compressed.
+      node-version:
+        description: Node.js version.
+        type: string
+        required: false
+        default: "20"
+      pnpm-version:
+        description: pnpm version.
+        type: string
+        required: false
+        default: "10"
+      skip-build:
+        description: Indicates if the build should be skipped.
+        type: boolean
+        required: false
+        default: true
       skip-appstore-release:
         description: Indicates if the appstore release should be skipped.
         type: boolean
@@ -34,6 +49,22 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        if: ${{ !inputs.skip-build }}
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        if: ${{ !inputs.skip-build }}
+        with:
+          version: ${{ inputs.pnpm-version }}
+      - name: Install dependencies
+        run: pnpm install
+        if: ${{ !inputs.skip-build }}
+      - name: Build
+        run: pnpm build
+        if: ${{ !inputs.skip-build }}
       - name: Create dist directory
         run: mkdir -p dist
       - name: Package Theme
