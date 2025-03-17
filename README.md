@@ -1,10 +1,14 @@
 # reusable-workflows
 
-Repository for reusable workflows.
+Reusable workflows for halo plugin and theme
 
-## How to use in plugin projects?
+## How to use?
 
-Example of `.github/workflows/ci.yaml`:
+### Plugin
+
+#### `.github/workflows/plugin-ci.yaml`
+
+Used to test whether the plugin can be built normally.
 
 ```yaml
 name: CI
@@ -23,7 +27,26 @@ jobs:
     uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v3
 ```
 
-Example of `.github/workflows/cd.yaml`:
+inputs:
+
+- `node-version`: (Optional) Version of Node.js, default is 18.
+- `pnpm-version`: (Optional) Version of pnpm, default is 8.
+- `java-version`: (Optional) Version of Java, default is 17.
+- `ui-path`: (Optional) Path of UI project, default is "console".
+- `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
+- `artifacts-path`: (Optional) Artifacts path, default is build/libs. Must be a folder.
+- `npm-registry-url`: (Optional) NPM registry URL.
+
+secrets:
+
+- `npm-auth-token`: (Optional) NPM auth token.
+
+#### `.github/workflows/plugin-cd.yaml`
+
+Used to build plugin and upload them to the Release and [Halo app store](https://www.halo.run/store/apps).
+
+> [!IMPORTANT]
+> Currently, the developer center of the Halo app store is not open to everyone, and only some developers can manage their own apps.
 
 ```yaml
 name: CD
@@ -44,4 +67,87 @@ jobs:
     with:
       # This is required for releasing to Halo App Store.
       app-id: app-Qxhpp
+```
+
+inputs:
+
+- `artifacts-path`: (Optional) Artifacts path, default is build/libs. Must be a folder.
+- `node-version`: (Optional) Version of Node.js, default is 18.
+- `pnpm-version`: (Optional) Version of pnpm, default is 8.
+- `java-version`: (Optional) Version of Java, default is 17.
+- `ui-path`: (Optional) Path of UI project, default is "console".
+- `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
+- `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
+- `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".
+- `halo-backend-baseurl`: (Optional) Base URL of Halo App Store, default is "<https://www.halo.run>".
+- `npm-registry-url`: (Optional) NPM registry URL.
+
+secrets:
+
+- `halo-pat`: Personal Access Token for Halo App Store, required for publishing.
+- `npm-auth-token`: (Optional) NPM auth token.
+
+### Theme
+
+#### `.github/workflows/theme-cd.yaml`
+
+Used to package theme and upload them to the Release and [Halo app store](https://www.halo.run/store/apps).
+
+> [!IMPORTANT]
+> Currently, the developer center of the Halo app store is not open to everyone, and only some developers can manage their own apps.
+
+```yaml
+name: CD
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  cd:
+    # Suggest using stable branch, tag or sha.
+    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v3
+    secrets:
+      halo-pat: ${{ secrets.HALO_PAT }}
+    permissions:
+      contents: write
+    with:
+      # This is required for releasing to Halo App Store.
+      app-id: theme-Abcde
+```
+
+inputs:
+
+- `compress-all`: (Optional) Whether to compress all files in the theme directory. If false, only necessary files will be compressed, default is false.
+- `node-version`: (Optional) Version of Node.js, default is 20.
+- `pnpm-version`: (Optional) Version of pnpm, default is 10.
+- `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
+- `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".
+- `halo-backend-baseurl`: (Optional) Base URL of Halo App Store, default is "<https://www.halo.run>".
+
+secrets:
+
+- `halo-pat`: Personal Access Token for Halo App Store, required for publishing.
+
+Please note that if you need to use this workflow to publish themes, your theme repository must use pnpm for package management and include a build script. The build script must include `npx @halo-dev/theme-package-cli`. For information about npx @halo-dev/theme-package-cli, please visit: [halo-dev/theme-package-cli](https://github.com/halo-dev/theme-package-cli), for example:
+
+```json
+{
+  "name": "@halo-dev/theme-foo",
+  "scripts": {
+    "build": "npx @halo-dev/theme-package-cli"
+  },
+}
+```
+
+If your theme includes other build processes, you need to put them before `npx @halo-dev/theme-package-cli`, for example:
+
+```json
+{
+  "name": "@halo-dev/theme-foo",
+  "scripts": {
+    "build": "vite build && npx @halo-dev/theme-package-cli"
+  },
+}
 ```
