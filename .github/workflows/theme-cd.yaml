@@ -65,31 +65,18 @@ jobs:
       - name: Build
         run: pnpm build
         if: ${{ inputs.needs-build }}
-      - name: Create dist directory
-        run: mkdir -p dist
       - name: Package Theme
         run: |
-          version=${{ github.event.release.tag_name }}
-          repo_name=$(echo ${{ github.repository }} | cut -d "/" -f 2)
-          zip_name="${repo_name}-${version#v}.zip"
-          
-          rm -rf node_modules
-          
           if [ "${{ inputs.compress-all }}" = "true" ]; then
-            zip -r "dist/${zip_name}" . -x ".*" -x ".*/**" -x "dist/*"
+            npx @halo-dev/theme-package-cli --all
           else
-            find . -type d -name "templates" -o -name "i18n" | zip -r "dist/${zip_name}" -@
-            find . -name "*.yaml" -not -name "pnpm-lock.yaml" | zip -r "dist/${zip_name}" -@
-            find . -name "README.md" -o -name "LICENSE" | zip -r "dist/${zip_name}" -@
+            npx @halo-dev/theme-package-cli
           fi
-          
-          echo "Created theme package at dist/${zip_name}"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: theme-package
           path: dist
-          retention-days: 1
 
   github-release:
     name: GitHub Release
