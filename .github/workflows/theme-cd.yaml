@@ -76,7 +76,7 @@ jobs:
           rm -rf node_modules
           
           if [ "${{ inputs.compress-all }}" = "true" ]; then
-            zip -r "dist/${zip_name}" . -x "*/\.*" -x ".\.*" -x "dist/*"
+            zip -r "dist/${zip_name}" . -x ".*" -x ".*/**" -x "dist/*"
           else
             find . -type d -name "templates" -o -name "i18n" | zip -r "dist/${zip_name}" -@
             find . -name "*.yaml" -not -name "pnpm-lock.yaml" | zip -r "dist/${zip_name}" -@
