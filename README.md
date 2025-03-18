@@ -119,7 +119,6 @@ jobs:
 
 inputs:
 
-- `compress-all`: (Optional) Whether to compress all files in the theme directory. If false, only necessary files will be compressed, default is false.
 - `node-version`: (Optional) Version of Node.js, default is 20.
 - `pnpm-version`: (Optional) Version of pnpm, default is 10.
 - `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.

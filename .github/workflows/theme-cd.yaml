@@ -3,11 +3,6 @@ name: Theme CD
 on:
   workflow_call:
     inputs:
-      compress-all:
-        type: boolean
-        required: false
-        default: false
-        description: Whether to compress all files in the theme directory. If false, only necessary files will be compressed.
       node-version:
         description: Node.js version.
         type: string
