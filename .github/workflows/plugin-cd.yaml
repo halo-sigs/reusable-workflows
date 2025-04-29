@@ -67,8 +67,6 @@ jobs:
     if: github.event_name == 'release'
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-tags: true
       - name: Setup Environment
         uses: halo-sigs/reusable-workflows/plugin-setup-env@v3
         with:
