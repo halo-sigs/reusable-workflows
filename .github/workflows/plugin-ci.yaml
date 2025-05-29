@@ -38,6 +38,11 @@ on:
         default: ""
         description: NPM registry.
         required: false
+      build-args:
+        type: string
+        description: Additional build arguments.
+        required: false
+        default: ""
     secrets:
       npm-auth-token:
         description: NPM auth token.
@@ -58,7 +63,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
           npm-registry-url: ${{ inputs.npm-registry-url }}
       - name: Check
-        run: ./gradlew clean build
+        run: ./gradlew clean build ${{ inputs.build-args }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
