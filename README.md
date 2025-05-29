@@ -36,6 +36,7 @@ inputs:
 - `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
 - `artifacts-path`: (Optional) Artifacts path, default is build/libs. Must be a folder.
 - `npm-registry-url`: (Optional) NPM registry URL.
+- `build-args`: (Optional) Additional build arguments, default is empty.
 
 secrets:
 
@@ -81,6 +82,7 @@ inputs:
 - `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".
 - `halo-backend-baseurl`: (Optional) Base URL of Halo App Store, default is "<https://www.halo.run>".
 - `npm-registry-url`: (Optional) NPM registry URL.
+- `build-args`: (Optional) Additional build arguments, default is empty.
 
 secrets:
 

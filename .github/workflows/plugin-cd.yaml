@@ -53,6 +53,11 @@ on:
         default: ""
         description: NPM registry.
         required: false
+      build-args:
+        type: string
+        description: Additional build arguments.
+        required: false
+        default: ""
     secrets:
       halo-pat:
         description: Personal access token of Halo Appstore.
@@ -79,7 +84,7 @@ jobs:
       - name: Build
         run: |
           version=${{ github.event.release.tag_name }}
-          ./gradlew -Pversion=${version#v} build -x check
+          ./gradlew clean build -x check -Pversion=${version#v} ${{ inputs.build-args }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
