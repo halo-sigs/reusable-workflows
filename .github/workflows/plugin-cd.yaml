@@ -84,7 +84,7 @@ jobs:
       - name: Build
         run: |
           version=${{ github.event.release.tag_name }}
-          ./gradlew clean build -x check -Pversion=${version#v} ${{ inputs.build-args }}
+          chmod +x ./gradlew &&./gradlew clean build -x check -Pversion=${version#v} ${{ inputs.build-args }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
