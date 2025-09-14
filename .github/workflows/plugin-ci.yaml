@@ -63,7 +63,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
           npm-registry-url: ${{ inputs.npm-registry-url }}
       - name: Check
-        run: ./gradlew clean build ${{ inputs.build-args }}
+        run: chmod +x ./gradlew && ./gradlew clean build ${{ inputs.build-args }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
