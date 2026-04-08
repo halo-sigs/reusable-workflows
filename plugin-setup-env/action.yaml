@@ -5,17 +5,17 @@ inputs:
   node-version:
     description: Node.js version.
     required: false
-    default: "18"
+    default: "24"
 
   pnpm-version:
     description: pnpm version.
     required: false
-    default: "8"
+    default: "10"
 
   java-version:
     description: Java version.
     required: false
-    default: "17"
+    default: "21"
 
   cache-dept-path:
     description: Pnpm cache dependency path.
@@ -35,14 +35,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: pnpm/action-setup@v3
+    - uses: pnpm/action-setup@v5
       if: ${{ inputs.skip-node-setup != 'true' }}
       name: Setup pnpm
       with:
         version: ${{ inputs.pnpm-version }}
 
     - name: Set up Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       if: ${{ inputs.skip-node-setup != 'true' }}
       with:
         node-version: ${{ inputs.node-version }}
@@ -51,7 +51,7 @@ runs:
         registry-url: ${{ inputs.npm-registry-url }}
 
     - name: Setup JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         distribution: "temurin"
         cache: "gradle"

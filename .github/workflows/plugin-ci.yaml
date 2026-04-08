@@ -7,17 +7,17 @@ on:
         description: Node.js version.
         type: string
         required: false
-        default: "18"
+        default: "24"
       pnpm-version:
         description: pnpm version.
         type: string
         required: false
-        default: "8"
+        default: "10"
       java-version:
         description: Java version.
         type: string
         required: false
-        default: "17"
+        default: "21"
       ui-path:
         description: Path of UI project.
         type: string
@@ -52,9 +52,9 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup Environment
-        uses: halo-sigs/reusable-workflows/plugin-setup-env@v3
+        uses: halo-sigs/reusable-workflows/plugin-setup-env@v4
         with:
           cache-dept-path: ${{ inputs.ui-path }}/pnpm-lock.yaml
           skip-node-setup: ${{ inputs.skip-node-setup }}
@@ -68,7 +68,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
       - name: Upload Artifacts
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: artifacts
           path: ${{ inputs.artifacts-path }}

@@ -24,14 +24,14 @@ on:
 jobs:
   ci:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v3
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v4
 ```
 
 inputs:
 
-- `node-version`: (Optional) Version of Node.js, default is 18.
-- `pnpm-version`: (Optional) Version of pnpm, default is 8.
-- `java-version`: (Optional) Version of Java, default is 17.
+- `node-version`: (Optional) Version of Node.js, default is 24.
+- `pnpm-version`: (Optional) Version of pnpm, default is 10.
+- `java-version`: (Optional) Version of Java, default is 21.
 - `ui-path`: (Optional) Path of UI project, default is "console".
 - `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
 - `artifacts-path`: (Optional) Artifacts path, default is build/libs. Must be a folder.
@@ -60,7 +60,7 @@ on:
 jobs:
   cd:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v3
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v4
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     permissions:
@@ -73,9 +73,9 @@ jobs:
 inputs:
 
 - `artifacts-path`: (Optional) Artifacts path, default is build/libs. Must be a folder.
-- `node-version`: (Optional) Version of Node.js, default is 18.
-- `pnpm-version`: (Optional) Version of pnpm, default is 8.
-- `java-version`: (Optional) Version of Java, default is 17.
+- `node-version`: (Optional) Version of Node.js, default is 24.
+- `pnpm-version`: (Optional) Version of pnpm, default is 10.
+- `java-version`: (Optional) Version of Java, default is 21.
 - `ui-path`: (Optional) Path of UI project, default is "console".
 - `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
 - `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
@@ -109,7 +109,7 @@ on:
 jobs:
   cd:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v3
+    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v4
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     permissions:
@@ -121,7 +121,7 @@ jobs:
 
 inputs:
 
-- `node-version`: (Optional) Version of Node.js, default is 20.
+- `node-version`: (Optional) Version of Node.js, default is 24.
 - `pnpm-version`: (Optional) Version of pnpm, default is 10.
 - `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
 - `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".

@@ -7,7 +7,7 @@ on:
         description: Node.js version.
         type: string
         required: false
-        default: "20"
+        default: "24"
       pnpm-version:
         description: pnpm version.
         type: string
@@ -38,13 +38,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v5
         with:
           version: ${{ inputs.pnpm-version }}
       - name: Install dependencies
@@ -52,7 +52,7 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: theme-package
           path: dist
@@ -63,9 +63,9 @@ jobs:
     needs: package
     if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: theme-package
           path: dist
@@ -80,14 +80,14 @@ jobs:
     needs: package
     if: ${{ github.event_name == 'release' && !inputs.skip-appstore-release }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: theme-package
           path: dist
       - name: Release to App Store
-        uses: halo-sigs/app-store-release-action@v3
+        uses: halo-sigs/app-store-release-action@v4
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           app-id: ${{ inputs.app-id }}
