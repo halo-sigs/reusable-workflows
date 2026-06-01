@@ -30,7 +30,7 @@ jobs:
 inputs:
 
 - `node-version`: (Optional) Version of Node.js, default is 24.
-- `pnpm-version`: (Optional) Version of pnpm, default is 10.
+- `pnpm-version`: (Optional) Version of pnpm, default is 10. Set to `""` if the project uses Corepack and defines `packageManager` in `package.json`.
 - `java-version`: (Optional) Version of Java, default is 21.
 - `ui-path`: (Optional) Path of UI project, default is "console".
 - `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
@@ -74,7 +74,7 @@ inputs:
 
 - `artifacts-path`: (Optional) Artifacts path, default is build/libs. Must be a folder.
 - `node-version`: (Optional) Version of Node.js, default is 24.
-- `pnpm-version`: (Optional) Version of pnpm, default is 10.
+- `pnpm-version`: (Optional) Version of pnpm, default is 10. Set to `""` if the project uses Corepack and defines `packageManager` in `package.json`.
 - `java-version`: (Optional) Version of Java, default is 21.
 - `ui-path`: (Optional) Path of UI project, default is "console".
 - `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
@@ -122,7 +122,7 @@ jobs:
 inputs:
 
 - `node-version`: (Optional) Version of Node.js, default is 24.
-- `pnpm-version`: (Optional) Version of pnpm, default is 10.
+- `pnpm-version`: (Optional) Version of pnpm, default is 10. Set to `""` if the project uses Corepack and defines `packageManager` in `package.json`.
 - `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
 - `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".
 - `halo-backend-baseurl`: (Optional) Base URL of Halo App Store, default is "<https://www.halo.run>".
