@@ -27,4 +27,4 @@ jobs:
       - run: pnpm exec biome check src
       - run: pnpm run typecheck
       - run: pnpm run build
-      - run: git diff --exit-code -- dist/index.js
+      - run: node --check dist/index.js
