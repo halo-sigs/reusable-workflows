@@ -60,6 +60,7 @@ const octokit = github.getOctokit(token);
 const appId = githubCore.getInput("app-id");
 const assetsDir = githubCore.getInput("assets-dir");
 const releaseId = githubCore.getInput("release-id");
+const syncGitHubReadme = githubCore.getBooleanInput("sync-github-readme");
 const publishMaxAttempts = 5;
 
 const run = async () => {
@@ -90,6 +91,14 @@ const run = async () => {
   await uploadAssets(appRelease.metadata.name, assets);
 
   await publishAppRelease(appRelease, html, markdown);
+
+  if (syncGitHubReadme) {
+    githubCore.info("Sync GitHub README to App Store");
+    await apiClient.post(
+      `/apis/uc.api.developer.store.halo.run/v1alpha1/applications/${encodeURIComponent(appId)}/sync-readme-from-github`,
+    );
+    githubCore.info("Successfully synced GitHub README");
+  }
 };
 
 run()
