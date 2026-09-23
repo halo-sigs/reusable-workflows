@@ -87,7 +87,7 @@ jobs:
           name: theme-package
           path: dist
       - name: Release to App Store
-        uses: halo-sigs/app-store-release-action@v4
+        uses: $/app-store-release-action
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           app-id: ${{ inputs.app-id }}
