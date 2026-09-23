@@ -152,3 +152,9 @@ If your theme includes other build processes, you need to put them before `npx @
   },
 }
 ```
+
+### App Store release action
+
+The App Store release action is maintained in [`app-store-release-action`](app-store-release-action). After the v5 release, use `halo-sigs/reusable-workflows/app-store-release-action@v5` when a reusable workflow does not fit your build. Its inputs are `github-token`, `app-id`, `release-id`, `assets-dir`, `halo-pat`, and the optional `halo-backend-baseurl`.
+
+The former `halo-sigs/app-store-release-action` repository remains available for existing `@v4` callers but receives no new features. See [the maintainer checklist](dev/README.md) for development and release steps.
