@@ -26,5 +26,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec biome check src
       - run: pnpm run typecheck
-      - run: pnpm run build
       - run: node --check dist/index.js
+      - run: pnpm run build
