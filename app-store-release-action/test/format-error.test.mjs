@@ -66,3 +66,31 @@ test("GitHub API failure includes request path and status", async () => {
     },
   );
 });
+
+test("GitHub network failure does not claim an HTTP response", async () => {
+  const octokit = new Octokit({
+    auth: "dummy",
+    retry: { enabled: false },
+    request: {
+      fetch: async () => {
+        throw new Error("getaddrinfo ENOTFOUND api.github.com");
+      },
+    },
+  });
+
+  await assert.rejects(
+    octokit.request("GET /repos/{owner}/{repo}", {
+      owner: "halo-sigs",
+      repo: "missing",
+    }),
+    (error) => {
+      assert.equal(error.response, undefined);
+      assert.equal(error.status, 500);
+      assert.equal(
+        formatError(error),
+        "GET /repos/halo-sigs/missing: getaddrinfo ENOTFOUND api.github.com",
+      );
+      return true;
+    },
+  );
+});

@@ -28,10 +28,14 @@ export function formatError(error: unknown): string {
     const githubError = error as Error & {
       status: number;
       request: { method: string; url: string };
+      response?: unknown;
     };
     const path = new URL(githubError.request.url, "https://api.github.com")
       .pathname;
-    return `${githubError.request.method} ${path}: HTTP ${githubError.status}: ${error.message}`;
+    const failure = githubError.response
+      ? `HTTP ${githubError.status}: ${error.message}`
+      : error.message;
+    return `${githubError.request.method} ${path}: ${failure}`;
   }
 
   return error instanceof Error ? error.message : String(error);
