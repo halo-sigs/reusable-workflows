@@ -16,13 +16,13 @@ jobs:
       run:
         working-directory: app-store-release-action
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
-      - uses: pnpm/action-setup@v5
+      - uses: pnpm/action-setup@v6
         with:
-          version: "10.33.0"
+          version: "12.6.0"
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec biome check src
       - run: pnpm run typecheck
