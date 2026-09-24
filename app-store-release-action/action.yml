@@ -21,6 +21,10 @@ inputs:
   halo-pat:
     description: "Personal access token of Halo app store"
     required: true
+  sync-github-readme:
+    description: "Sync the application README from its configured public GitHub repository after publishing"
+    required: false
+    default: "false"
 outputs:
   status:
     description: "Status"

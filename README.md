@@ -68,6 +68,7 @@ jobs:
     with:
       # This is required for releasing to Halo App Store.
       app-id: app-Qxhpp
+      sync-github-readme: true
 ```
 
 inputs:
@@ -80,6 +81,7 @@ inputs:
 - `skip-node-setup`: (Optional) Indicates if the node setup should be skipped, default is false.
 - `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
 - `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".
+- `sync-github-readme`: (Optional) Sync the application README from its configured public GitHub repository after the App Store release is published, default is false. The App Store PAT needs the `app-store-developer-sync-github-readme-role` permission. If synchronization fails, the workflow fails although the version is already published.
 - `halo-backend-baseurl`: (Optional) Base URL of Halo App Store, default is "<https://www.halo.run>".
 - `npm-registry-url`: (Optional) NPM registry URL.
 - `build-args`: (Optional) Additional build arguments, default is empty.
@@ -117,6 +119,7 @@ jobs:
     with:
       # This is required for releasing to Halo App Store.
       app-id: theme-Abcde
+      sync-github-readme: true
 ```
 
 inputs:
@@ -125,6 +128,7 @@ inputs:
 - `pnpm-version`: (Optional) Version of pnpm, default is 10. Set to `""` if the project uses Corepack and defines `packageManager` in `package.json`.
 - `skip-appstore-release`: (Optional) Indicates if the appstore release should be skipped, default is false.
 - `app-id`: (Optional) Application ID from Halo App Store, default is "not-configured-app-id".
+- `sync-github-readme`: (Optional) Sync the application README from its configured public GitHub repository after the App Store release is published, default is false. The App Store PAT needs the `app-store-developer-sync-github-readme-role` permission. If synchronization fails, the workflow fails although the version is already published.
 - `halo-backend-baseurl`: (Optional) Base URL of Halo App Store, default is "<https://www.halo.run>".
 
 secrets:
@@ -155,6 +159,6 @@ If your theme includes other build processes, you need to put them before `npx @
 
 ### App Store release action
 
-The App Store release action is maintained in [`app-store-release-action`](app-store-release-action). After the v5 release, use `halo-sigs/reusable-workflows/app-store-release-action@v5` when a reusable workflow does not fit your build. Its inputs are `github-token`, `app-id`, `release-id`, `assets-dir`, `halo-pat`, and the optional `halo-backend-baseurl`.
+The App Store release action is maintained in [`app-store-release-action`](app-store-release-action). After the v5 release, use `halo-sigs/reusable-workflows/app-store-release-action@v5` when a reusable workflow does not fit your build. Its inputs are `github-token`, `app-id`, `release-id`, `assets-dir`, `halo-pat`, and the optional `halo-backend-baseurl` and `sync-github-readme` (default `false`).
 
 The former `halo-sigs/app-store-release-action` repository remains available for existing `@v4` callers but receives no new features. See [the maintainer checklist](dev/README.md) for development and release steps.

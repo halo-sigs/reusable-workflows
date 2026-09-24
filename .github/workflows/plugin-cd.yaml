@@ -38,6 +38,11 @@ on:
         type: boolean
         required: false
         default: false
+      sync-github-readme:
+        description: Sync the application README from its configured public GitHub repository after publishing.
+        type: boolean
+        required: false
+        default: false
       app-id:
         description: Application ID from Halo App Store.
         required: false
@@ -131,3 +136,4 @@ jobs:
           release-id: ${{ github.event.release.id }}
           assets-dir: ${{ inputs.artifacts-path }}
           halo-pat: ${{ secrets.halo-pat }}
+          sync-github-readme: ${{ inputs.sync-github-readme }}
