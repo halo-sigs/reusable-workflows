@@ -6,6 +6,7 @@ import AdmZip from "adm-zip";
 import FormData from "form-data";
 import YAML from "yaml";
 import apiClient from "./utils/api-client";
+import { formatError } from "./utils/format-error";
 
 interface CommonManifest {
   requires: string;
@@ -55,15 +56,18 @@ interface AppReleaseRequest {
   makeLatest: boolean;
 }
 
-const token = githubCore.getInput("github-token");
-const octokit = github.getOctokit(token);
+let octokit: ReturnType<typeof github.getOctokit>;
 const appId = githubCore.getInput("app-id");
 const assetsDir = githubCore.getInput("assets-dir");
 const releaseId = githubCore.getInput("release-id");
-const syncGitHubReadme = githubCore.getBooleanInput("sync-github-readme");
 const publishMaxAttempts = 5;
 
 const run = async () => {
+  const token = githubCore.getInput("github-token", { required: true });
+  githubCore.setSecret(token);
+  const syncGitHubReadme = githubCore.getBooleanInput("sync-github-readme");
+  octokit = github.getOctokit(token);
+
   if (!releaseId) {
     throw new Error("Release ID not found");
   }
@@ -106,7 +110,13 @@ run()
     githubCore.info("✅ [Completed]: App release created successfully");
   })
   .catch((error) => {
-    githubCore.setFailed(`❌ [Failed]: ${error.message}`);
+    if (error instanceof Error && error.stack) {
+      githubCore.debug(error.stack);
+      if (error.cause instanceof Error && error.cause.stack) {
+        githubCore.debug(error.cause.stack);
+      }
+    }
+    githubCore.setFailed(`❌ [Failed]: ${formatError(error)}`);
   });
 
 async function getGitHubReleaseInfo(owner: string, repo: string) {
@@ -386,13 +396,19 @@ async function uploadAssets(releaseName: string, assets: string[]) {
     formData.append("releaseName", releaseName);
     formData.append("file", fs.createReadStream(assetPath), asset);
 
-    await apiClient.post(
-      "/apis/uc.api.developer.store.halo.run/v1alpha1/assets",
-      formData,
-      {
-        headers: formData.getHeaders(),
-      },
-    );
+    try {
+      await apiClient.post(
+        "/apis/uc.api.developer.store.halo.run/v1alpha1/assets",
+        formData,
+        {
+          headers: formData.getHeaders(),
+        },
+      );
+    } catch (error) {
+      throw new Error(`Failed to upload ${asset}: ${formatError(error)}`, {
+        cause: error,
+      });
+    }
 
     githubCore.info(`Successfully uploaded file: ${asset}`);
   });
