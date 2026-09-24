@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import axios from "axios";
+import { Octokit } from "octokit";
 import { formatError } from "../src/utils/format-error.ts";
 
 test("HTTP failure includes the request and server detail without credentials", () => {
@@ -35,5 +36,33 @@ test("network and non-Axios failures remain readable", () => {
   assert.equal(
     formatError(new Error("Missing release ID")),
     "Missing release ID",
+  );
+});
+
+test("GitHub API failure includes request path and status", async () => {
+  const octokit = new Octokit({
+    auth: "dummy",
+    request: {
+      fetch: async () =>
+        new Response(JSON.stringify({ message: "Not Found" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        }),
+    },
+  });
+
+  await assert.rejects(
+    octokit.request("GET /repos/{owner}/{repo}?debug=private-token", {
+      owner: "halo-sigs",
+      repo: "missing",
+    }),
+    (error) => {
+      assert.match(error.request.url, /debug=private-token/);
+      assert.equal(
+        formatError(error),
+        "GET /repos/halo-sigs/missing: HTTP 404: Not Found",
+      );
+      return true;
+    },
   );
 });
