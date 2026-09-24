@@ -20,21 +20,21 @@
 		}
 	],
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
+		"@biomejs/biome": "2.5.14",
 		"@types/adm-zip": "^0.5.8",
-		"@types/node": "24.12.2",
-		"@vercel/ncc": "^0.38.4",
-		"release-it": "^19.2.4",
-		"typescript": "^6.0.2"
+		"@types/node": "24.13.6",
+		"@vercel/ncc": "^0.45.0",
+		"release-it": "^21.1.0",
+		"typescript": "^6.0.3"
 	},
 	"dependencies": {
-		"@actions/core": "^3.0.0",
-		"@actions/github": "^9.0.0",
-		"adm-zip": "^0.5.17",
-		"axios": "^1.14.0",
-		"form-data": "^4.0.5",
+		"@actions/core": "^3.0.1",
+		"@actions/github": "^9.1.1",
+		"adm-zip": "^0.6.1",
+		"axios": "^1.20.0",
+		"form-data": "^4.0.6",
 		"octokit": "^5.0.5",
-		"yaml": "^2.8.3"
+		"yaml": "^2.9.1"
 	},
-	"packageManager": "pnpm@12.5.1"
+	"packageManager": "pnpm@12.6.0"
 }
