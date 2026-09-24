@@ -24,7 +24,7 @@ on:
 jobs:
   ci:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v4
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-ci.yaml@v5
 ```
 
 inputs:
@@ -60,7 +60,7 @@ on:
 jobs:
   cd:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v4
+    uses: halo-sigs/reusable-workflows/.github/workflows/plugin-cd.yaml@v5
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     permissions:
@@ -111,7 +111,7 @@ on:
 jobs:
   cd:
     # Suggest using stable branch, tag or sha.
-    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v4
+    uses: halo-sigs/reusable-workflows/.github/workflows/theme-cd.yaml@v5
     secrets:
       halo-pat: ${{ secrets.HALO_PAT }}
     permissions:
@@ -159,6 +159,6 @@ If your theme includes other build processes, you need to put them before `npx @
 
 ### App Store release action
 
-The App Store release action is maintained in [`app-store-release-action`](app-store-release-action). After the v5 release, use `halo-sigs/reusable-workflows/app-store-release-action@v5` when a reusable workflow does not fit your build. Its inputs are `github-token`, `app-id`, `release-id`, `assets-dir`, `halo-pat`, and the optional `halo-backend-baseurl` and `sync-github-readme` (default `false`).
+The App Store release action is maintained in [`app-store-release-action`](app-store-release-action). Use `halo-sigs/reusable-workflows/app-store-release-action@v5` when a reusable workflow does not fit your build. Its inputs are `github-token`, `app-id`, `release-id`, `assets-dir`, `halo-pat`, and the optional `halo-backend-baseurl` and `sync-github-readme` (default `false`).
 
 The former `halo-sigs/app-store-release-action` repository remains available for existing `@v4` callers but receives no new features. See [the maintainer checklist](dev/README.md) for development and release steps.
