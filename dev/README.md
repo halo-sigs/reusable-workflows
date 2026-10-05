@@ -4,7 +4,7 @@
 
 - [ ] Start a feature branch from `main` and open a pull request targeting `main`.
 - [ ] Keep the reusable workflow inputs and the App Store action inputs compatible within a major version. Use a new major version for breaking changes.
-- [ ] For changes under `app-store-release-action`, run `pnpm install --frozen-lockfile`, `pnpm exec biome check src`, `pnpm run typecheck`, and `pnpm run build` in that directory. Build and commit `dist/index.js` on Linux, matching CI; macOS produces different bundle bytes. Regenerate `pnpm-lock.yaml` with pnpm when dependencies change.
+- [ ] For changes under `app-store-release-action`, run `pnpm install --frozen-lockfile`, `pnpm exec biome check src test`, `pnpm run typecheck`, `node --test test/*.test.mjs`, and `pnpm run build` in that directory. Build and commit `dist/index.js` on Linux, matching CI; macOS produces different bundle bytes. Regenerate `pnpm-lock.yaml` with pnpm when dependencies change.
 - [ ] Check that CI passes and test the affected workflow or action from the pull request commit in a caller repository before releasing.
 
 ## Release
